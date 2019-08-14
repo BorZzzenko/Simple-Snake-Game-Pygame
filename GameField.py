@@ -1,6 +1,10 @@
-from Snake import Snake
+import random
 
-class GameField(object):
+from Snake import Snake
+from Food import Food
+from GameFieldObject import GameFieldObject
+
+class GameField():
     def __init__(self, left_edge, right_edge, top_edge, bot_edge):
         self.__left_edge = left_edge
         self.__right_edge = right_edge
@@ -34,6 +38,9 @@ class GameField(object):
     @property
     def snake(self):
         return self.__snake
+    @property
+    def food(self):
+        return self.__food
 
     def add_snake(self):
         if self.__snake is None:
@@ -43,3 +50,16 @@ class GameField(object):
             self.__snake = Snake(x, y, self)
 
         return self.__snake
+
+    def add_food(self):
+        if self.__food is None:
+            x = y= 0
+            while True:
+                x = random.randint(self.__left_edge, self.__right_edge - 1)
+                y = random.randint(self.__top_edge, self.__bot_edge - 1)
+
+                if (x, y) not in self.__snake:
+                    break
+            
+            self.__food = Food(x, y)
+            print("create food", x, y)

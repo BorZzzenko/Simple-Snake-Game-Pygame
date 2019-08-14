@@ -1,7 +1,8 @@
-class SnakeBody():
+from GameFieldObject import GameFieldObject
+
+class SnakeBody(GameFieldObject):
     def __init__(self, x, y):
-        self.x = x
-        self.y = y
+        return super().__init__(x, y)
 
 class Snake():
     def __init__(self, x, y, game_field):
@@ -14,6 +15,11 @@ class Snake():
     def __iter__(self):
         for i in self.__body:
             yield i
+
+    def __contains__(self, other):
+        coordinates = [(i.x, i.y) for i in self.__body]
+        d = other in coordinates
+        return other in coordinates
 
     def move(self):
         left = self.__game_field.left_edge 
@@ -54,7 +60,7 @@ class Snake():
         dy = self.__directions[0][1]
 
         if (dir[direction.lower()][0] != -dx and
-            dir[direction.lower()][1] != -dy):
+                dir[direction.lower()][1] != -dy):
             self.__directions[0] = dir[direction.lower()]
 
 

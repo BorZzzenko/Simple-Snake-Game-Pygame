@@ -1,5 +1,6 @@
 import pygame
-from GameField import *
+
+from GameField import GameField
 
 class Window():
     def __init__(self, width, height):
@@ -28,6 +29,7 @@ class Window():
         
         self.draw_game_field()
         self.draw_snake()
+        self.draw_food()
         
         text_score = self.__text_font.render(str(self.__game_field.score), 0, self.colors["BLACK"])
         self.__screen.blit(text_score, (self.CELL_WIDTH, self.CELL_WIDTH))
@@ -59,6 +61,12 @@ class Window():
             for i in snake:
                 pygame.draw.rect(self.__screen, self.colors["BLACK"], [i.x * self.CELL_WIDTH,
                                  i.y * self.CELL_WIDTH, self.CELL_WIDTH, self.CELL_WIDTH])
+
+    def draw_food(self):
+        food = self.__game_field.food
+        if food is not None:           
+            pygame.draw.rect(self.__screen, self.colors["RED"], [food.x * self.CELL_WIDTH,
+                                 food.y * self.CELL_WIDTH, self.CELL_WIDTH, self.CELL_WIDTH])
 
     def add_game_field(self):
         if self.__game_field is None:
@@ -100,7 +108,12 @@ def main():
             if keys[pygame.K_DOWN] or keys[pygame.K_s]:
                 snake.change_direction('down')
         
+
+        if game_field.food is None:
+           game_field.add_food()
+        
         snake.move()
+        
         win.draw()
 
 
