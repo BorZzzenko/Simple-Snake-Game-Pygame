@@ -18,7 +18,6 @@ class Snake():
 
     def __contains__(self, other):
         coordinates = [(i.x, i.y) for i in self.__body]
-        d = other in coordinates
         return other in coordinates
 
     def move(self):

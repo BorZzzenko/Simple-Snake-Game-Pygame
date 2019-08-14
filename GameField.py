@@ -62,4 +62,3 @@ class GameField():
                     break
             
             self.__food = Food(x, y)
-            print("create food", x, y)

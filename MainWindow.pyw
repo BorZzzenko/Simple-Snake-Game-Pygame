@@ -88,7 +88,7 @@ def main():
 
     while True:
         pygame.time.delay(50)
-        clock.tick(20)
+        clock.tick(15)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
