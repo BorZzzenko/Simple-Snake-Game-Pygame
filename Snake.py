@@ -23,6 +23,9 @@ class Snake():
         coordinates = [(i.x, i.y) for i in self.__body]
         return other in coordinates
 
+    def __getitem__(self, index):
+        return self.__body[index]
+
     def move(self):
         left = self.__game_field.left_edge 
         right = self.__game_field.right_edge 
@@ -55,11 +58,18 @@ class Snake():
 
             if (x, y) == (self.__body[0].x, self.__body[0].y):
                 self.__eat()
+
+        # Check body collision
+        coordinates = [(i.x, i.y) for i in self.__body[1:]]
+        if (self.__body[0].x, self.__body[0].y) in coordinates:
+            return False
                 
         # Offset directions for body
         x, y = self.__directions[0][0], self.__directions[0][1]
         self.__directions.insert(0, (x, y))
         self.__directions.pop()
+
+        return True
 
     def change_direction(self, direction : str):
         dir = {

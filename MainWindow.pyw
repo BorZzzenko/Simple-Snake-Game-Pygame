@@ -112,7 +112,8 @@ def main():
         if game_field.food is None:
            game_field.add_food()
         
-        snake.move()
+        if not snake.move():
+            break
         
         win.draw()
 
