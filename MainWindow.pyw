@@ -27,6 +27,7 @@ class Window():
         self.__screen.fill(self.colors["WHITE"])
         
         self.draw_game_field()
+        self.draw_snake()
         
         text_score = self.__text_font.render(str(self.__game_field.score), 0, self.colors["BLACK"])
         self.__screen.blit(text_score, (self.CELL_WIDTH, self.CELL_WIDTH))
@@ -52,9 +53,14 @@ class Window():
         pygame.draw.line(self.__screen, self.colors["BLACK"], (left, top),
                          (left, bot))
 
- 
+    def draw_snake(self):
+        snake = self.__game_field.snake
+        if snake is not None:
+            for i in snake:
+                pygame.draw.rect(self.__screen, self.colors["BLACK"], [i.x * self.CELL_WIDTH,
+                                 i.y * self.CELL_WIDTH, self.CELL_WIDTH, self.CELL_WIDTH])
 
-    def set_game_field(self):
+    def add_game_field(self):
         if self.__game_field is None:
             edges = self.INDENT, self.__width - self.INDENT, self.INDENT, self.__width - self.INDENT
             edges = [i // self.CELL_WIDTH for i in edges]
@@ -67,8 +73,9 @@ def main():
     width = 500
     win = Window(width, width)
     
-    game_field = win.set_game_field()
-
+    game_field = win.add_game_field()
+    snake = game_field.add_snake()
+    
     clock = pygame.time.Clock()
 
     while True:
@@ -78,7 +85,22 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 exit()       
-
+        
+        keys = pygame.key.get_pressed()
+        for key in keys:
+            if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+                snake.change_direction('left')
+            
+            if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+                snake.change_direction('right')
+            
+            if keys[pygame.K_UP] or keys[pygame.K_w]:
+                snake.change_direction('up')
+            
+            if keys[pygame.K_DOWN] or keys[pygame.K_s]:
+                snake.change_direction('down')
+        
+        snake.move()
         win.draw()
 
 

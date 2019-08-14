@@ -1,3 +1,5 @@
+from Snake import Snake
+
 class GameField(object):
     def __init__(self, left_edge, right_edge, top_edge, bot_edge):
         self.__left_edge = left_edge
@@ -34,4 +36,10 @@ class GameField(object):
         return self.__snake
 
     def add_snake(self):
-        pass
+        if self.__snake is None:
+            x = self.__right_edge // 2
+            y = self.bot_edge // 2
+
+            self.__snake = Snake(x, y, self)
+
+        return self.__snake
