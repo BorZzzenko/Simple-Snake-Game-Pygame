@@ -34,6 +34,10 @@ class GameField():
     @property
     def score(self):
         return self.__score
+    
+    @score.setter
+    def score(self, value):
+        self.__score = value
 
     @property
     def snake(self):

@@ -86,6 +86,7 @@ class Snake():
 
     def __eat(self):
         self.__game_field.delete_food()
+        self.__game_field.score += 10
         self.add_body_block()
 
 
