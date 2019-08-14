@@ -38,6 +38,7 @@ class GameField():
     @property
     def snake(self):
         return self.__snake
+    
     @property
     def food(self):
         return self.__food
@@ -53,7 +54,7 @@ class GameField():
 
     def add_food(self):
         if self.__food is None:
-            x = y= 0
+            x = y = 0
             while True:
                 x = random.randint(self.__left_edge, self.__right_edge - 1)
                 y = random.randint(self.__top_edge, self.__bot_edge - 1)
@@ -62,3 +63,7 @@ class GameField():
                     break
             
             self.__food = Food(x, y)
+
+    def delete_food(self):
+        del self.__food
+        self.__food = None

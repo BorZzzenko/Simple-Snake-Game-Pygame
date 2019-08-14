@@ -8,8 +8,8 @@ class Snake():
     def __init__(self, x, y, game_field, length = 3):
         self.__game_field = game_field
         
-        self.__head = SnakeBody(x, y)
-        self.__body = [self.__head]
+        head = SnakeBody(x, y)
+        self.__body = [head]
         self.__directions = [(-1, 0)]
 
         for i in range(length):
@@ -29,6 +29,7 @@ class Snake():
         top = self.__game_field.top_edge 
         bot = self.__game_field.bot_edge 
         
+        # Moving
         for i in range(len(self.__body)):
             self.__body[i].x += self.__directions[i][0]
             self.__body[i].y += self.__directions[i][1]
@@ -47,6 +48,14 @@ class Snake():
             elif self.__body[i].y > bot - 1:
                 self.__body[i].y = top
         
+        # Eating food
+        if self.__game_field.food is not None:
+            x = self.__game_field.food.x
+            y = self.__game_field.food.y
+
+            if (x, y) == (self.__body[0].x, self.__body[0].y):
+                self.__eat()
+                
         # Offset directions for body
         x, y = self.__directions[0][0], self.__directions[0][1]
         self.__directions.insert(0, (x, y))
@@ -74,6 +83,10 @@ class Snake():
         
         self.__body.append(SnakeBody(x, y))
         self.__directions.append(last_dir)
+
+    def __eat(self):
+        self.__game_field.delete_food()
+        self.add_body_block()
 
 
 
