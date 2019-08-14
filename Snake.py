@@ -5,12 +5,15 @@ class SnakeBody(GameFieldObject):
         return super().__init__(x, y)
 
 class Snake():
-    def __init__(self, x, y, game_field):
+    def __init__(self, x, y, game_field, length = 3):
         self.__game_field = game_field
         
         self.__head = SnakeBody(x, y)
-        self.__body = [self.__head, SnakeBody(x + 1, y), SnakeBody(x + 2, y), SnakeBody(x + 3, y), SnakeBody(x + 4, y)]
-        self.__directions = [(-1, 0), (-1, 0), (-1, 0), (-1, 0), (-1, 0)]
+        self.__body = [self.__head]
+        self.__directions = [(-1, 0)]
+
+        for i in range(length):
+            self.add_body_block()
 
     def __iter__(self):
         for i in self.__body:
@@ -61,6 +64,16 @@ class Snake():
         if (dir[direction.lower()][0] != -dx and
                 dir[direction.lower()][1] != -dy):
             self.__directions[0] = dir[direction.lower()]
+
+    def add_body_block(self):
+        x, y = self.__body[-1].x, self.__body[-1].y
+        last_dir = self.__directions[-1]
+        
+        x -= last_dir[0]
+        y -= last_dir[1]
+        
+        self.__body.append(SnakeBody(x, y))
+        self.__directions.append(last_dir)
 
 
 
