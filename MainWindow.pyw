@@ -11,28 +11,29 @@ class Window():
         
         self.CELL_WIDTH = 10
         self.INDENT = 4 * self.CELL_WIDTH
-        self.colors = {
-            "BLACK" : (0, 0, 0),
-            "WHITE" : (255, 255, 255),
-            "RED" : (255, 0, 0)
-            }
+        self.colors = self.Color()
 
         pygame.init()
         self.__screen = pygame.display.set_mode((width, height))
         self.__text_font = pygame.font.Font("font\kenpixel_mini_square.ttf", 20)
         
         pygame.display.set_caption("Snake game")
-        self.__screen.fill(self.colors["WHITE"])
+        self.__screen.fill(self.colors.WHITE)
+
+    class Color():
+        BLACK = (0, 0, 0),
+        WHITE = (255, 255, 255),
+        RED = (255, 0, 0)
         
     def draw(self):
-        self.__screen.fill(self.colors["WHITE"])
+        self.__screen.fill(self.colors.WHITE)
         
         self.draw_game_field()
         self.draw_snake()
         self.draw_food()
         
         # Draw score
-        text_score = self.__text_font.render(str(self.__game_field.score), 0, self.colors["BLACK"])
+        text_score = self.__text_font.render(str(self.__game_field.score), 0, self.colors.BLACK)
         self.__screen.blit(text_score, (self.CELL_WIDTH * 2, self.CELL_WIDTH))
 
         pygame.display.update()
@@ -44,29 +45,29 @@ class Window():
         bot = self.__game_field.bot_edge * self.CELL_WIDTH
 
         # Top edge
-        pygame.draw.line(self.__screen, self.colors["BLACK"], (left, top),
+        pygame.draw.line(self.__screen, self.colors.BLACK, (left, top),
                          (right, top))
         # Bottom edge
-        pygame.draw.line(self.__screen, self.colors["BLACK"], (left, bot),
+        pygame.draw.line(self.__screen, self.colors.BLACK, (left, bot),
                          (right, bot))
         # Right edge
-        pygame.draw.line(self.__screen, self.colors["BLACK"], (right, top),
+        pygame.draw.line(self.__screen, self.colors.BLACK, (right, top),
                          (right, bot))
         # Left edge
-        pygame.draw.line(self.__screen, self.colors["BLACK"], (left, top),
+        pygame.draw.line(self.__screen, self.colors.BLACK, (left, top),
                          (left, bot))
 
     def draw_snake(self):
         snake = self.__game_field.snake
         if snake is not None:
             for i in snake:
-                pygame.draw.rect(self.__screen, self.colors["BLACK"], [i.x * self.CELL_WIDTH,
+                pygame.draw.rect(self.__screen, self.colors.BLACK, [i.x * self.CELL_WIDTH,
                                  i.y * self.CELL_WIDTH, self.CELL_WIDTH, self.CELL_WIDTH])
 
     def draw_food(self):
         food = self.__game_field.food
         if food is not None:           
-            pygame.draw.rect(self.__screen, self.colors["RED"], [food.x * self.CELL_WIDTH,
+            pygame.draw.rect(self.__screen, self.colors.RED, [food.x * self.CELL_WIDTH,
                              food.y * self.CELL_WIDTH, self.CELL_WIDTH, self.CELL_WIDTH])
 
     def add_game_field(self):
@@ -87,7 +88,7 @@ class Window():
         buttons = [pygame.image.load('buttons/Play_but.png'),
                    pygame.image.load('buttons/Play_but_on.png')]
 
-        self.__screen.fill(self.colors["WHITE"])
+        self.__screen.fill(self.colors.WHITE)
         
         while True:
             play_button = buttons[0]
