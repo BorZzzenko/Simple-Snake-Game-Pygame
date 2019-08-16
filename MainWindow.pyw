@@ -3,20 +3,20 @@ import pygame
 from GameField import GameField
 
 class Window():
-    def __init__(self, width, height):
+    def __init__(self, width, height, cell_width = 10):
         self.__width = width
         self.__height = height
         
         self.__game_field = None
         
-        self.CELL_WIDTH = 10
+        self.CELL_WIDTH = cell_width
         self.INDENT = 4 * self.CELL_WIDTH
         self.colors = self.Color()
 
         pygame.init()
-        self.__screen = pygame.display.set_mode((width, height))
-        self.__text_font = pygame.font.Font("font\kenpixel_mini_square.ttf", 20)
-        
+        self.__screen = pygame.display.set_mode((width, height))      
+        self.__text_font = pygame.font.Font("font\kenpixel_mini_square.ttf",
+                                           self.CELL_WIDTH * 2)
         pygame.display.set_caption("Snake game")
         self.__screen.fill(self.colors.WHITE)
 
@@ -33,8 +33,10 @@ class Window():
         self.draw_food()
         
         # Draw score
-        text_score = self.__text_font.render(str(self.__game_field.score), 0, self.colors.BLACK)
-        self.__screen.blit(text_score, (self.CELL_WIDTH * 2, self.CELL_WIDTH))
+        text_score = self.__text_font.render(str(self.__game_field.score),
+                                            0, self.colors.BLACK)
+        self.__screen.blit(text_score,
+                          (self.CELL_WIDTH * 2, self.CELL_WIDTH))
 
         pygame.display.update()
 
@@ -46,34 +48,36 @@ class Window():
 
         # Top edge
         pygame.draw.line(self.__screen, self.colors.BLACK, (left, top),
-                         (right, top))
+                        (right, top))
         # Bottom edge
         pygame.draw.line(self.__screen, self.colors.BLACK, (left, bot),
-                         (right, bot))
+                        (right, bot))
         # Right edge
         pygame.draw.line(self.__screen, self.colors.BLACK, (right, top),
-                         (right, bot))
+                        (right, bot))
         # Left edge
         pygame.draw.line(self.__screen, self.colors.BLACK, (left, top),
-                         (left, bot))
+                        (left, bot))
 
     def draw_snake(self):
         snake = self.__game_field.snake
         if snake is not None:
             for i in snake:
-                pygame.draw.rect(self.__screen, self.colors.BLACK, [i.x * self.CELL_WIDTH,
-                                 i.y * self.CELL_WIDTH, self.CELL_WIDTH, self.CELL_WIDTH])
+                pygame.draw.rect(self.__screen, self.colors.BLACK,
+                                [i.x * self.CELL_WIDTH, i.y * self.CELL_WIDTH,
+                                self.CELL_WIDTH, self.CELL_WIDTH])
 
     def draw_food(self):
         food = self.__game_field.food
         if food is not None:           
-            pygame.draw.rect(self.__screen, self.colors.RED, [food.x * self.CELL_WIDTH,
-                             food.y * self.CELL_WIDTH, self.CELL_WIDTH, self.CELL_WIDTH])
+            pygame.draw.rect(self.__screen, self.colors.RED,
+                            [food.x * self.CELL_WIDTH, food.y * self.CELL_WIDTH,
+                            self.CELL_WIDTH, self.CELL_WIDTH])
 
     def add_game_field(self):
         if self.__game_field is None:
             edges = (self.INDENT, self.__width - self.INDENT,
-                     self.INDENT, self.__width - self.INDENT)
+                    self.INDENT, self.__width - self.INDENT)
             edges = [i // self.CELL_WIDTH for i in edges]
 
             self.__game_field = GameField(*edges)
@@ -83,10 +87,10 @@ class Window():
     # Main menu loop
     def main_menu(self):
         first_but_pos = (self.__width // 2,
-                         self.__height // 2 - 2 * self.INDENT)
+                        self.__height // 2 - 2 * self.INDENT)
         
         buttons = [pygame.image.load('buttons/Play_but.png'),
-                   pygame.image.load('buttons/Play_but_on.png')]
+                  pygame.image.load('buttons/Play_but_on.png')]
 
         self.__screen.fill(self.colors.WHITE)
         
@@ -155,16 +159,66 @@ class Window():
                 break
         
             self.draw()
+        
+        self.play_again_screen()
+    
+    # Play again screen
+    def play_again_screen(self):
+        text_pos = (self.__width // 2  - 2 * self.INDENT,
+                    self.__height // 2 - 2 * self.INDENT)
+
+        but_position = (self.__width // 2,
+                        self.__height // 2 + 2 * self.INDENT)
+        
+        buttons = [pygame.image.load('buttons/Again_but.png'),
+                   pygame.image.load('buttons/Again_but_on.png')]
+
+        self.__screen.fill(self.colors.WHITE)
+        
+        while True:
+            again_button = buttons[0]
+            
+            rect = again_button.get_rect(center = but_position)
+
+            mouse_position = pygame.mouse.get_pos()
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    exit()
+                
+                # Play again
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1 and rect.collidepoint(mouse_position):
+                        self.play_again_setup()
+                        self.game_loop()
+                        return
+
+            # On play button
+            if rect.collidepoint(mouse_position):
+                again_button = buttons[1]
+            
+            message = self.__text_font.render("Oops..! You lose",
+                                             0, self.colors.BLACK)
+            text = self.__text_font.render("Your Score: " + str(self.__game_field.score),
+                                          0, self.colors.BLACK)
+            
+            self.__screen.blit(message, text_pos)
+            self.__screen.blit(text, (text_pos[0], text_pos[1] + self.INDENT))
+            
+            self.__screen.blit(again_button, (rect.x, rect.y))
+
+            pygame.display.update()
+
+    def play_again_setup(self):
+        self.__game_field.reset_game()
 
 
 def main():
-    width = 500
+    width = 400
     win = Window(width, width)
     win.add_game_field()
     
     win.main_menu()
-
-    
 
 
 if __name__ == '__main__':

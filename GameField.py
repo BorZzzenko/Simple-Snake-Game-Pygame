@@ -71,3 +71,15 @@ class GameField():
     def delete_food(self):
         del self.__food
         self.__food = None
+
+    def delete_snake(self):
+        del self.__snake
+        self.__snake = None
+
+    def lose_points(self):
+        self.__score = 0
+
+    def reset_game(self):
+        self.lose_points()
+        self.delete_snake()
+        self.delete_food()

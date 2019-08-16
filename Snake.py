@@ -80,14 +80,17 @@ class Snake():
         dx = self.__directions[0][0]
         dy = self.__directions[0][1]
 
+        # 
         if (dir[direction.lower()][0] != -dx and
                 dir[direction.lower()][1] != -dy):
             self.__directions[0] = dir[direction.lower()]
 
     def add_body_block(self):
+        # Last block parameters
         x, y = self.__body[-1].x, self.__body[-1].y
         last_dir = self.__directions[-1]
         
+        # Сoordinates after the last block
         x -= last_dir[0]
         y -= last_dir[1]
         
