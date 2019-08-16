@@ -50,7 +50,7 @@ class GameField():
     def add_snake(self):
         if self.__snake is None:
             x = self.__right_edge // 2
-            y = self.bot_edge // 2
+            y = self.__bot_edge // 2
 
             self.__snake = Snake(x, y, self)
 

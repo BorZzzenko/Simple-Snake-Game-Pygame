@@ -98,15 +98,19 @@ def main():
         for key in keys:
             if keys[pygame.K_LEFT] or keys[pygame.K_a]:
                 snake.change_direction('left')
+                break
             
             if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
                 snake.change_direction('right')
+                break
             
             if keys[pygame.K_UP] or keys[pygame.K_w]:
                 snake.change_direction('up')
+                break
             
             if keys[pygame.K_DOWN] or keys[pygame.K_s]:
                 snake.change_direction('down')
+                break
         
 
         if game_field.food is None:
