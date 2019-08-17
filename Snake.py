@@ -97,7 +97,7 @@ class Snake():
         self.__body.append(SnakeBody(x, y))
         self.__directions.append(last_dir)
 
-    def __eat(self):
+    def __eat(self):  
         self.__game_field.score += self.__game_field.food.score
         self.__game_field.delete_food()
         

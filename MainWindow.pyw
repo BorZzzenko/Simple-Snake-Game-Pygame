@@ -128,8 +128,9 @@ class Window():
     # Main game loop
     def game_loop(self):
         snake = self.__game_field.add_snake()
-    
-        food_counter = 0
+        self.__game_field.add_food(self.SCORE_POINTS)
+        
+        food_counter = 1
 
         clock = pygame.time.Clock()
 
@@ -162,6 +163,8 @@ class Window():
         
             # Adding food
             if self.__game_field.food is None:
+               pygame.mixer.Sound("sounds\eatfruit.wav").play()
+                
                food_counter += 1
                
                if food_counter <= 5:
@@ -171,6 +174,7 @@ class Window():
                    food_counter = 0
         
             if not snake.move():
+                pygame.mixer.Sound("sounds/bump.ogg").play()
                 break
         
             self.draw()
