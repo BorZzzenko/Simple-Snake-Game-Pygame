@@ -56,7 +56,7 @@ class GameField():
 
         return self.__snake
 
-    def add_food(self):
+    def add_food(self, score):
         if self.__food is None:
             x = y = 0
             while True:
@@ -66,7 +66,7 @@ class GameField():
                 if (x, y) not in self.__snake:
                     break
             
-            self.__food = Food(x, y)
+            self.__food = Food(x, y, score)
 
     def delete_food(self):
         del self.__food

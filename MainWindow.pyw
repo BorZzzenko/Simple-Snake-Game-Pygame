@@ -3,7 +3,7 @@ import pygame
 from GameField import GameField
 
 class Window():
-    def __init__(self, width, height, cell_width = 10):
+    def __init__(self, width, height, cell_width = 10, normal_score_points = 10):
         self.__width = width
         self.__height = height
         
@@ -11,6 +11,9 @@ class Window():
         
         self.CELL_WIDTH = cell_width
         self.INDENT = 4 * self.CELL_WIDTH
+        self.SCORE_POINTS = normal_score_points
+        self.BONUS_SCORE_POINTS = normal_score_points * 3 // 2
+        
         self.colors = self.Color()
 
         pygame.init()
@@ -24,6 +27,7 @@ class Window():
         BLACK = (0, 0, 0),
         WHITE = (255, 255, 255),
         RED = (255, 0, 0)
+        GREEN = (0, 204, 102)
         
     def draw(self):
         self.__screen.fill(self.colors.WHITE)
@@ -70,7 +74,9 @@ class Window():
     def draw_food(self):
         food = self.__game_field.food
         if food is not None:           
-            pygame.draw.rect(self.__screen, self.colors.RED,
+            color = self.colors.GREEN if food.score == 10 else self.colors.RED            
+            
+            pygame.draw.rect(self.__screen, color,
                             [food.x * self.CELL_WIDTH, food.y * self.CELL_WIDTH,
                             self.CELL_WIDTH, self.CELL_WIDTH])
 
@@ -123,6 +129,8 @@ class Window():
     def game_loop(self):
         snake = self.__game_field.add_snake()
     
+        food_counter = 0
+
         clock = pygame.time.Clock()
 
         while True:
@@ -132,7 +140,8 @@ class Window():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     exit()       
-        
+            
+            # Snake movement control
             keys = pygame.key.get_pressed()
             for key in keys:
                 if keys[pygame.K_LEFT] or keys[pygame.K_a]:
@@ -151,9 +160,15 @@ class Window():
                     snake.change_direction('down')
                     break
         
-
+            # Adding food
             if self.__game_field.food is None:
-               self.__game_field.add_food()
+               food_counter += 1
+               
+               if food_counter <= 5:
+                self.__game_field.add_food(self.SCORE_POINTS)
+               else:
+                   self.__game_field.add_food(self.BONUS_SCORE_POINTS)
+                   food_counter = 0
         
             if not snake.move():
                 break
