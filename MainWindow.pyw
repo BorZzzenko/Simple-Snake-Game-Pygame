@@ -20,6 +20,8 @@ class Window():
         self.__screen = pygame.display.set_mode((width, height))      
         self.__text_font = pygame.font.Font("font\kenpixel_mini_square.ttf",
                                            self.CELL_WIDTH * 2)
+        icon = pygame.image.load("image\icon.png")
+        pygame.display.set_icon(icon)
         pygame.display.set_caption("Snake game")
         self.__screen.fill(self.colors.WHITE)
 
