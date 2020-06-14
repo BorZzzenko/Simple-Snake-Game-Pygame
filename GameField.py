@@ -1,8 +1,8 @@
 import random
 
-from Snake import Snake
 from Food import Food
-from GameFieldObject import GameFieldObject
+from Snake import Snake
+
 
 class GameField():
     def __init__(self, left_edge, right_edge, top_edge, bot_edge):
