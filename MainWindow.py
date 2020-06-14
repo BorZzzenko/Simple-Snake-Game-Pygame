@@ -1,4 +1,5 @@
 import pygame
+import os
 
 from GameField import GameField
 
@@ -18,9 +19,9 @@ class Window():
 
         pygame.init()
         self.__screen = pygame.display.set_mode((width, height))      
-        self.__text_font = pygame.font.Font("font\kenpixel_mini_square.ttf",
+        self.__text_font = pygame.font.Font("font/kenpixel_mini_square.ttf",
                                            self.CELL_WIDTH * 2)
-        icon = pygame.image.load("image\icon.png")
+        icon = pygame.image.load("image/icon.png")
         pygame.display.set_icon(icon)
         pygame.display.set_caption("Snake game")
         self.__screen.fill(self.colors.WHITE)
@@ -97,8 +98,8 @@ class Window():
         first_but_pos = (self.__width // 2,
                         self.__height // 2 - 2 * self.INDENT)
         
-        buttons = [pygame.image.load('buttons/Play_but.png'),
-                  pygame.image.load('buttons/Play_but_on.png')]
+        buttons = [pygame.image.load(os.path.join('buttons', 'Play_but_image.png')),
+                  pygame.image.load(os.path.join('buttons', 'Play_but_on_image.png')),]
 
         self.__screen.fill(self.colors.WHITE)
         
@@ -165,7 +166,7 @@ class Window():
         
             # Adding food
             if self.__game_field.food is None:
-               pygame.mixer.Sound("sounds\eatfruit.wav").play()
+               pygame.mixer.Sound("sounds/eatfruit.wav").play()
                 
                food_counter += 1
                
@@ -191,8 +192,8 @@ class Window():
         but_position = (self.__width // 2,
                         self.__height // 2 + 2 * self.INDENT)
         
-        buttons = [pygame.image.load('buttons/Again_but.png'),
-                   pygame.image.load('buttons/Again_but_on.png')]
+        buttons = [pygame.image.load(os.path.join('buttons', 'Again_but_image.png')),
+                   pygame.image.load(os.path.join('buttons', 'Again_but_on_image.png')),]
 
         self.__screen.fill(self.colors.WHITE)
         
